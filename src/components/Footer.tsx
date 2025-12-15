@@ -19,9 +19,9 @@ const socialLinks = [
   },
   {
     name: "GitHub",
-    href: "https://github.com/venkateshbhukya",
+    href: "https://github.com/venkatesh-b9",
     icon: Github,
-    label: "github.com/venkateshbhukya",
+    label: "github.com/venkatesh-b9",
   },
 ];
 
