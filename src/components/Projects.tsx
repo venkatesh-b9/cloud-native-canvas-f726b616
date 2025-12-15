@@ -9,7 +9,9 @@ import {
   Container,
   Terminal,
   Activity,
-  Shield
+  Shield,
+  Folder,
+  ArrowUpRight
 } from "lucide-react";
 
 const projects = [
@@ -26,7 +28,8 @@ const projects = [
       { icon: Terminal, text: "Python automation scripts" },
       { icon: Activity, text: "CloudWatch monitoring" },
     ],
-    color: "from-purple-500/20 to-blue-500/20",
+    gradient: "from-purple-600 via-violet-600 to-indigo-600",
+    glowColor: "purple",
   },
   {
     title: "ZOD-Track",
@@ -41,7 +44,8 @@ const projects = [
       { icon: Activity, text: "CloudWatch alerting & logs" },
       { icon: Shield, text: "Zero-downtime deployments" },
     ],
-    color: "from-cyan-500/20 to-purple-500/20",
+    gradient: "from-cyan-600 via-blue-600 to-purple-600",
+    glowColor: "cyan",
   },
 ];
 
@@ -51,9 +55,16 @@ const Projects = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   return (
-    <section id="projects" className="relative py-32 overflow-hidden">
+    <section id="projects" className="relative py-32 overflow-hidden noise-overlay">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-b from-background via-card/10 to-background" />
+      
+      {/* Decorative elements */}
+      <motion.div 
+        className="absolute -bottom-40 -left-40 w-80 h-80 blob blob-purple opacity-20"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+      />
       
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -62,22 +73,23 @@ const Projects = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <span className="text-primary text-sm font-medium tracking-wider uppercase">
+          <span className="inline-flex items-center gap-2 text-primary text-sm font-medium tracking-wider uppercase">
+            <Folder className="w-4 h-4" />
             Portfolio
           </span>
-          <h2 className="text-4xl sm:text-5xl font-bold mt-4">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold mt-4">
             Featured <span className="gradient-text">Projects</span>
           </h2>
-          <p className="text-muted-foreground text-lg mt-4 max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg mt-6 max-w-2xl mx-auto">
             Real-world DevOps solutions showcasing infrastructure automation, 
             CI/CD pipelines, and cloud-native deployments.
           </p>
         </motion.div>
 
         {/* Projects Grid */}
-        <div className="grid lg:grid-cols-2 gap-8">
+        <div className="grid lg:grid-cols-2 gap-10">
           {projects.map((project, index) => (
             <motion.div
               key={project.title}
@@ -86,60 +98,71 @@ const Projects = () => {
               transition={{ duration: 0.8, delay: 0.2 + index * 0.2 }}
               onMouseEnter={() => setHoveredIndex(index)}
               onMouseLeave={() => setHoveredIndex(null)}
-              className="group relative"
-              style={{ perspective: "1000px" }}
+              className="group relative card-3d"
             >
               <motion.div
                 animate={{
-                  rotateX: hoveredIndex === index ? 2 : 0,
-                  rotateY: hoveredIndex === index ? -2 : 0,
+                  rotateX: hoveredIndex === index ? 3 : 0,
+                  rotateY: hoveredIndex === index ? -3 : 0,
                   scale: hoveredIndex === index ? 1.02 : 1,
+                  z: hoveredIndex === index ? 50 : 0,
                 }}
-                transition={{ duration: 0.3 }}
-                className="glass-card overflow-hidden"
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="glass-premium overflow-hidden card-3d-inner"
               >
                 {/* Project Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${project.color}`} />
+                <div className="relative h-56 overflow-hidden">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${project.gradient} opacity-60`} />
                   <img
                     src={project.image}
                     alt={project.title}
-                    className="w-full h-full object-cover opacity-50 group-hover:opacity-70 group-hover:scale-110 transition-all duration-500"
+                    className="w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-110 transition-all duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-card via-card/60 to-transparent" />
                   
                   {/* Floating badges */}
-                  <div className="absolute top-4 left-4 flex gap-2">
-                    <span className="px-3 py-1 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 text-primary text-xs font-medium">
+                  <div className="absolute top-5 left-5 flex gap-2">
+                    <motion.span 
+                      className="px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white text-xs font-semibold"
+                      whileHover={{ scale: 1.05 }}
+                    >
                       DevOps
-                    </span>
+                    </motion.span>
                   </div>
+
+                  {/* Arrow indicator */}
+                  <motion.div 
+                    className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <ArrowUpRight className="w-5 h-5 text-white" />
+                  </motion.div>
                 </div>
 
                 {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-foreground mb-1">
+                <div className="p-8">
+                  <h3 className="text-2xl lg:text-3xl font-bold text-foreground mb-2 group-hover:gradient-text transition-all">
                     {project.title}
                   </h3>
-                  <p className="text-primary text-sm mb-3">{project.subtitle}</p>
-                  <p className="text-muted-foreground text-sm mb-6">
+                  <p className="text-primary text-sm font-medium mb-4">{project.subtitle}</p>
+                  <p className="text-muted-foreground text-sm mb-8 leading-relaxed">
                     {project.description}
                   </p>
 
                   {/* Features */}
-                  <div className="space-y-3 mb-6">
+                  <div className="space-y-4 mb-8">
                     {project.features.map((feature, fIndex) => (
                       <motion.div
                         key={feature.text}
                         initial={{ opacity: 0, x: -20 }}
                         animate={isInView ? { opacity: 1, x: 0 } : {}}
-                        transition={{ delay: 0.5 + fIndex * 0.1 }}
-                        className="flex items-center gap-3 text-sm"
+                        transition={{ delay: 0.6 + fIndex * 0.1 }}
+                        className="flex items-center gap-4 text-sm group/feature"
                       >
-                        <div className="w-6 h-6 rounded bg-primary/20 flex items-center justify-center flex-shrink-0">
-                          <feature.icon className="w-3.5 h-3.5 text-primary" />
+                        <div className={`w-8 h-8 rounded-lg bg-gradient-to-br ${project.gradient} opacity-80 flex items-center justify-center flex-shrink-0 group-hover/feature:scale-110 transition-transform`}>
+                          <feature.icon className="w-4 h-4 text-white" />
                         </div>
-                        <span className="text-muted-foreground">{feature.text}</span>
+                        <span className="text-muted-foreground group-hover/feature:text-foreground transition-colors">{feature.text}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -147,16 +170,22 @@ const Projects = () => {
                   {/* Tags */}
                   <div className="flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
-                      <span
+                      <motion.span
                         key={tag}
-                        className="px-2 py-1 text-xs rounded bg-secondary/50 text-muted-foreground border border-border/50"
+                        whileHover={{ scale: 1.05, y: -2 }}
+                        className="px-3 py-1.5 text-xs rounded-lg bg-secondary/50 text-muted-foreground border border-border/50 hover:border-primary/30 hover:text-foreground transition-all cursor-default"
                       >
                         {tag}
-                      </span>
+                      </motion.span>
                     ))}
                   </div>
                 </div>
               </motion.div>
+
+              {/* Glow effect on hover */}
+              <motion.div
+                className={`absolute -inset-1 bg-gradient-to-r ${project.gradient} rounded-3xl blur-xl opacity-0 group-hover:opacity-20 transition-opacity duration-500 -z-10`}
+              />
             </motion.div>
           ))}
         </div>
