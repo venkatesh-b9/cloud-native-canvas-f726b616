@@ -6,10 +6,12 @@ import Projects from "@/components/Projects";
 import Skills from "@/components/Skills";
 import Education from "@/components/Education";
 import Footer from "@/components/Footer";
+import FloatingParticles from "@/components/FloatingParticles";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground relative">
+      <FloatingParticles />
       <Navbar />
       <main>
         <Hero />
