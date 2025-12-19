@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import EyeballThemeToggle from "./EyeballThemeToggle";
 
 const navLinks = [
   { name: "About", href: "#about" },
@@ -49,6 +50,9 @@ const Navbar = () => {
                   <span className="absolute -bottom-1 left-0 w-0 h-0.5 gradient-bg-primary group-hover:w-full transition-all duration-300" />
                 </motion.a>
               ))}
+              
+              {/* Eyeball Theme Toggle */}
+              <EyeballThemeToggle />
             </div>
 
             {/* Mobile Menu Button */}
@@ -79,6 +83,11 @@ const Navbar = () => {
                     {link.name}
                   </a>
                 ))}
+                {/* Mobile Theme Toggle */}
+                <div className="flex items-center gap-3 pt-2">
+                  <span className="text-muted-foreground text-sm">Theme</span>
+                  <EyeballThemeToggle />
+                </div>
               </div>
             </motion.div>
           )}
