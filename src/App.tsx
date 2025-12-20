@@ -7,7 +7,10 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
-const routerBaseName = import.meta.env.BASE_URL;
+
+// Vite sets BASE_URL to "./" when `base: "./"` (common for GitHub Pages).
+// React Router's `basename` must start with "/", so normalize it.
+const routerBaseName = import.meta.env.BASE_URL?.startsWith(".") ? "/" : import.meta.env.BASE_URL;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
